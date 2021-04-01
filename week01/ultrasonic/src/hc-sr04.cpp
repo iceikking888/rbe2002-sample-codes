@@ -24,7 +24,7 @@ enum PULSE_STATE {PLS_IDLE, PLS_WAITING_LOW, PLS_WAITING_HIGH, PLS_CAPTURED};
 volatile PULSE_STATE pulseState = PLS_IDLE;
 
 //this may be most any pin, connect the pin to Trig on the sensor
-const uint8_t trigPin = 14;
+const uint8_t trigPin = 12;
 
 //for scheduling pings
 uint32_t lastPing = 0;
@@ -69,6 +69,9 @@ void setup()
   //so we'll print out the value of the register to figure out what it is
   Serial.print("TCCR3B = ");
   Serial.println(TCCR3B, HEX);
+  // HEX 3 = 0011 BIN
+  // /64 Prescaler
+  // 1 time every 64 microseconds
 
   pinMode(trigPin, OUTPUT);
   pinMode(13, INPUT); //explicitly make 13 an input, since it defaults to OUTPUT in Arduino World (LED)
@@ -105,12 +108,18 @@ void loop()
     
     //EDIT THIS LINE: convert pulseLengthTimerCounts, which is in timer counts, to time, in us
     //You'll need the clock frequency and the pre-scaler to convert timer counts to time
-    
-    uint32_t pulseLengthUS = 0; //pulse length in us
-
+    // Timer 3 is 16-bit timer
+    // Clock Frequency is 16MHz
+    // Prescaler is /64 so 64 clock cycles = +1 timer count
+    // 16 clock cycles per us
+    // http://medesign.seas.upenn.edu/index.php/Guides/MaEvArM-timer3
+    uint32_t pulseLengthUS = pulseLengthTimerCounts / 4; //pulse length in us
+// /4 instead
 
     //EDIT THIS LINE AFTER YOU CALIBRATE THE SENSOR: put your formula in for converting us -> cm
-    float distancePulse = 0;    //distance in cm
+    // speed of sound is 340m/s or 29us/cm
+    // half of total distance ping travels is the distance to the object
+    float distancePulse = pulseLengthUS / 29.0 / 2.0;    //distance in cm
 
     Serial.print(millis());
     Serial.print('\t');
