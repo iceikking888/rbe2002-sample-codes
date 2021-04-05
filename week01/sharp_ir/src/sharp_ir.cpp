@@ -54,7 +54,6 @@ void loop()
   // Reset read count on button A press
   // (to get multiple sets of readings without reboot)
   if(i > 195 && !digitalRead(30)) {
-    Serial.println("Reset");
     i = 0;
   }
 
