@@ -3,6 +3,7 @@
  */
 
 #include <Arduino.h>
+#include <math.h>
 
 volatile uint16_t pulseStart = 0;
 volatile uint16_t pulseEnd = 0;
@@ -64,10 +65,10 @@ void loop()
 
     float voltage = adcValue * 5.0 / 1024.0;
 
-    //EDIT THIS LINE AFTER YOU CALIBRATE THE SENSOR: put your formula in for converting us -> cm
-    // speed of sound is 340m/s or 29us/cm
-    // half of total distance ping travels is the distance to the object
-    float distance = 0.0;    //distance in cm
+    // Inverse of Voltage = f(dist)
+    float distance = 23.308 * pow(voltage , -0.797);    //distance in cm
+    // Best fit dist = f(Voltage)
+    float distance2 = 23.4 * pow(voltage , -1.24);    //distance in cm
 
     Serial.print(millis());
     Serial.print('\t');
@@ -76,6 +77,8 @@ void loop()
     Serial.print(voltage);
     Serial.print('\t');
     Serial.print(distance);
+    Serial.print('\t');
+    Serial.print(distance2);
     Serial.print('\n');
   }
 
