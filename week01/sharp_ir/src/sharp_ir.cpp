@@ -35,7 +35,7 @@ void setup()
   // 1 time every 64 microseconds
 
   // Pin 18 is A0
-  pinMode(18, INPUT); //explicitly make 18 an input
+  pinMode(A0, INPUT); //explicitly make 18 an input
   pinMode(30, INPUT); //make pin 30 input for button B
 
   lastRead = millis();
@@ -61,7 +61,7 @@ void loop()
   if(currTime - lastRead >= READ_INTERVAL && i < 200) {
     i++;
     lastRead = currTime;
-    float adcValue = analogRead(18);
+    float adcValue = analogRead(A0);
 
     float voltage = adcValue * 5.0 / 1024.0;
 
