@@ -113,13 +113,13 @@ void loop()
     // Prescaler is /64 so 64 clock cycles = +1 timer count
     // 16 clock cycles per us
     // http://medesign.seas.upenn.edu/index.php/Guides/MaEvArM-timer3
-    uint32_t pulseLengthUS = pulseLengthTimerCounts / 4; //pulse length in us
+    uint32_t pulseLengthUS = pulseLengthTimerCounts * 4; //pulse length in us
 // /4 instead
 
     //EDIT THIS LINE AFTER YOU CALIBRATE THE SENSOR: put your formula in for converting us -> cm
     // speed of sound is 340m/s or 29us/cm
     // half of total distance ping travels is the distance to the object
-    float distancePulse = pulseLengthUS / 29.0 / 2.0;    //distance in cm
+    float distancePulse = pulseLengthUS / 58.0;    //distance in cm
 
     Serial.print(millis());
     Serial.print('\t');
