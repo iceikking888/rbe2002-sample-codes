@@ -13,6 +13,7 @@
  */
 
 #include <Arduino.h>
+#include <stdlib.h>
 
 volatile uint16_t pulseStart = 0;
 volatile uint16_t pulseEnd = 0;
@@ -52,6 +53,25 @@ void CommandPing(int trigPin)
   digitalWrite(trigPin, LOW);  //must bring the TRIG pin back LOW to get it to send a ping
 }
 
+int cmpfunc (const void * a, const void * b) {
+  return ( *(uint32_t*)a - *(uint32_t*)b );
+}
+
+uint32_t median(uint32_t *values) {
+  qsort(values, 5, sizeof(uint32_t), cmpfunc);
+  return values[2];
+}
+
+uint32_t mean(uint32_t *values) {
+  uint32_t sum = values[0] + 
+              values[1] + 
+              values[2] + 
+              values[3] + 
+              values[4];
+  uint32_t f = sum / 5.0;
+  return f;
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -80,6 +100,9 @@ void setup()
 
   Serial.println("/setup");
 }
+
+uint32_t filterValues[5] = {0, 0, 0, 0, 0};
+int currIndex = 0;
 
 void loop() 
 {
@@ -121,6 +144,10 @@ void loop()
     // half of total distance ping travels is the distance to the object
     float distancePulse = pulseLengthUS / 58.0;    //distance in cm
 
+    // Filter garbage values, compute running average
+    filterValues[currIndex] = pulseLengthUS;
+    currIndex += (currIndex == 4) ? -4 : 1;
+
     Serial.print(millis());
     Serial.print('\t');
     Serial.print(pulseLengthTimerCounts);
@@ -128,6 +155,10 @@ void loop()
     Serial.print(pulseLengthUS);
     Serial.print('\t');
     Serial.print(distancePulse);
+    Serial.print("\ta:\t");
+    Serial.print(mean(filterValues) / 58.0);
+    Serial.print("\tm:\t");
+    Serial.print(median(filterValues) / 58.0);
     Serial.print('\n');
   }
 }
