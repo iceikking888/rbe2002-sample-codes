@@ -36,6 +36,7 @@ void setup()
 
   // Pin 18 is A0
   pinMode(18, INPUT); //explicitly make 18 an input
+  pinMode(30, INPUT); //make pin 30 input for button B
 
   lastRead = millis();
 
@@ -44,12 +45,21 @@ void setup()
   Serial.println(" ms");
 }
 
+int i = 0;
 void loop() 
 {
   //schedule pings roughly every PING_INTERVAL milliseconds
   uint32_t currTime = millis();
 
-  if(currTime - lastRead >= READ_INTERVAL) {
+  // Reset read count on button A press
+  // (to get multiple sets of readings without reboot)
+  if(i > 195 && !digitalRead(30)) {
+    Serial.println("Reset");
+    i = 0;
+  }
+
+  if(currTime - lastRead >= READ_INTERVAL && i < 200) {
+    i++;
     lastRead = currTime;
     float adcValue = analogRead(18);
 
