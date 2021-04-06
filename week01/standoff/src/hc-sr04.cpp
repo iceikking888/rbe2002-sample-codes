@@ -155,6 +155,7 @@ void loop()
     float filteredDistance = mean(filterValues) / 58.0;
 
 
+    // Kp works very well here, so we have no need for Ki or Kd
     float err = filteredDistance - 20.0;
     static float kp = 10.0, ki = 1.0;
     float speed = kp * err;
