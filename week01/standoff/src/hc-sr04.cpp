@@ -12,8 +12,10 @@
  * But note that the timing is in timer counts, which must be converted to time.
  */
 
+#include <Romi32U4.h>
 #include <Arduino.h>
 #include <stdlib.h>
+#include <math.h>
 
 volatile uint16_t pulseStart = 0;
 volatile uint16_t pulseEnd = 0;
@@ -72,10 +74,12 @@ uint32_t mean(uint32_t *values) {
   return f;
 }
 
+Romi32U4Motors motors;
+
 void setup()
 {
   Serial.begin(115200);
-  while(!Serial) {} //you must open the Serial Monitor to get past this step!
+  // while(!Serial) {} //you must open the Serial Monitor to get past this step!
   Serial.println("setup");
 
   noInterrupts(); //disable interupts while we mess with the control registers
@@ -148,6 +152,21 @@ void loop()
     filterValues[currIndex] = pulseLengthUS;
     currIndex += (currIndex == 4) ? -4 : 1;
 
+    float filteredDistance = mean(filterValues) / 58.0;
+
+
+    // Kp works very well here, so we have no need for Ki or Kd
+    float err = filteredDistance - 20.0;
+    static float kp = 10.0, ki = 1.0;
+    float speed = kp * err;
+
+    // Speed threshhold
+    if(abs(speed) <= 5) {
+      speed = 0;
+    }
+
+    motors.setEfforts(speed, speed);
+
     Serial.print(millis());
     Serial.print('\t');
     Serial.print(pulseLengthTimerCounts);
@@ -155,10 +174,10 @@ void loop()
     Serial.print(pulseLengthUS);
     Serial.print('\t');
     Serial.print(distancePulse);
-    Serial.print("\ta:\t");
-    Serial.print(mean(filterValues) / 58.0);
     Serial.print("\tm:\t");
-    Serial.print(median(filterValues) / 58.0);
+    Serial.print(filteredDistance);
+    Serial.print("\ts:\t");
+    Serial.print(speed);
     Serial.print('\n');
   }
 }

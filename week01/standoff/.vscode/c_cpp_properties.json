@@ -8,9 +8,9 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/ultrasonic/include",
-                "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/ultrasonic/src",
-                "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/ultrasonic/.pio/libdeps/a-star32U4/wpi-32u4-library/src",
+                "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/standoff/include",
+                "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/standoff/src",
+                "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/standoff/.pio/libdeps/a-star32U4/wpi-32u4-library/src",
                 "C:/Users/ascii/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 "C:/Users/ascii/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/ascii/.platformio/packages/framework-arduino-avr/variants/leonardo",
@@ -23,9 +23,9 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/ultrasonic/include",
-                    "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/ultrasonic/src",
-                    "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/ultrasonic/.pio/libdeps/a-star32U4/wpi-32u4-library/src",
+                    "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/standoff/include",
+                    "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/standoff/src",
+                    "C:/Users/ascii/Documents/GitHub/rbe2002-sample-codes/week01/standoff/.pio/libdeps/a-star32U4/wpi-32u4-library/src",
                     "C:/Users/ascii/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     "C:/Users/ascii/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/ascii/.platformio/packages/framework-arduino-avr/variants/leonardo",
